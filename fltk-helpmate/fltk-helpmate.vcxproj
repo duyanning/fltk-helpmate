@@ -156,6 +156,8 @@
     <ClInclude Include="EVENT_TYPE.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Menu_Bar.h" />
+    <ClInclude Include="Menu_Item.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StringPrison.h" />
     <ClInclude Include="Tree.h" />
@@ -167,6 +169,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="fltk-helpmate.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Menu_Bar.cpp" />
+    <ClCompile Include="Menu_Item.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

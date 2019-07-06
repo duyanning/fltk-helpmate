@@ -22,10 +22,14 @@
 #include <errno.h>	// errno
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
-#include <FL/Fl_Menu_Bar.H>
+//#include <FL/Fl_Menu_Bar.H>
+#include "Menu_Bar.h"
+#include "Menu_Item.h"
 #include <FL/Fl_Native_File_Chooser.H>
 #include <FL/Fl_Box.H>
 #include <FL/fl_ask.H>
+
+#pragma comment(lib, "fltk-helpmate")
 
 class Application : public Fl_Window {
 	Fl_Native_File_Chooser* fc;
@@ -61,8 +65,10 @@ class Application : public Fl_Window {
 		}
 	}
 	// Handle an 'Open' request from the menu
-	static void open_cb(Fl_Widget* w, void* v) {
-		Application* app = (Application*)v;
+	//static void open_cb(Fl_Widget* w, void* v) {
+	void open_cb(Menu_Item* menu_item) {
+		//Application* app = (Application*)v;
+		Application* app = this;
 		app->fc->title("Open");
 		app->fc->type(Fl_Native_File_Chooser::BROWSE_FILE);		// only picks files that exist
 		switch (app->fc->show()) {
@@ -75,8 +81,10 @@ class Application : public Fl_Window {
 		}
 	}
 	// Handle a 'Save as' request from the menu
-	static void saveas_cb(Fl_Widget* w, void* v) {
-		Application* app = (Application*)v;
+	//static void saveas_cb(Fl_Widget* w, void* v) {
+	void saveas_cb(Menu_Item* menu_item) {
+		//Application* app = (Application*)v;
+		Application* app = this;
 		app->fc->title("Save As");
 		app->fc->type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);	// need this if file doesn't exist yet
 		switch (app->fc->show()) {
@@ -89,16 +97,20 @@ class Application : public Fl_Window {
 		}
 	}
 	// Handle a 'Save' request from the menu
-	static void save_cb(Fl_Widget* w, void* v) {
-		Application* app = (Application*)v;
+	//static void save_cb(Fl_Widget* w, void* v) {
+	void save_cb(Menu_Item* menu_item) {
+		//Application* app = (Application*)v;
+		Application* app = this;
 		if (strlen(app->fc->filename()) == 0) {
-			saveas_cb(w, v);
+			//saveas_cb(w, v);
+			saveas_cb(menu_item);
 		}
 		else {
 			app->save(app->fc->filename());
 		}
 	}
-	static void quit_cb(Fl_Widget* w, void* v) {
+	//static void quit_cb(Fl_Widget* w, void* v) {
+	void quit_cb(Menu_Item* menu_item) {
 		exit(0);
 	}
 	// Return an 'untitled' default pathname
@@ -117,11 +129,20 @@ class Application : public Fl_Window {
 public:
 	// CTOR
 	Application() : Fl_Window(400, 200, "Native File Chooser Example") {
-		Fl_Menu_Bar* menu = new Fl_Menu_Bar(0, 0, 400, 25);
-		menu->add("&File/&Open", FL_COMMAND + 'o', open_cb, (void*)this);
-		menu->add("&File/&Save", FL_COMMAND + 's', save_cb, (void*)this);
-		menu->add("&File/&Save As", 0, saveas_cb, (void*)this);
-		menu->add("&File/&Quit", FL_COMMAND + 'q', quit_cb);
+		//Fl_Menu_Bar* menu = new Fl_Menu_Bar(0, 0, 400, 25);
+		Menu_Bar* menu = new Menu_Bar(0, 0, 400, 25);
+		//menu->add("&File/&Open", FL_COMMAND + 'o', open_cb, (void*)this);
+		Menu_Item* menu_item = menu->add("&File/&Open", FL_COMMAND + 'o');
+		menu_item->eventClicked.addListener(this, &Application::open_cb);
+		//menu->add("&File/&Save", FL_COMMAND + 's', save_cb, (void*)this);
+		menu_item = menu->add("&File/&Save", FL_COMMAND + 's');
+		menu_item->eventClicked.addListener(this, &Application::save_cb);
+		//menu->add("&File/&Save As", 0, saveas_cb, (void*)this);
+		menu_item = menu->add("&File/&Save As", 0);
+		menu_item->eventClicked.addListener(this, &Application::saveas_cb);
+		//menu->add("&File/&Quit", FL_COMMAND + 'q', quit_cb);
+		menu_item = menu->add("&File/&Quit", FL_COMMAND + 'q');
+		menu_item->eventClicked.addListener(this, &Application::quit_cb);
 		// Describe the demo..
 		Fl_Box* box = new Fl_Box(20, 25 + 20, w() - 40, h() - 40 - 25);
 		box->color(45);
