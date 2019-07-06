@@ -22,17 +22,21 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Wizard.H>
-#include <FL/Fl_Button.H>
+//#include <FL/Fl_Button.H>
+#include <Button.h>
 #include <FL/Fl_Multiline_Output.H>
 //
 // Simple 'wizard' using fltk's new Fl_Wizard widget
 //
+
+#pragma comment(lib, "fltk-helpmate")
+
 Fl_Window* G_win = 0;
 Fl_Wizard* G_wiz = 0;
 
-void back_cb(Fl_Widget*, void*) { G_wiz->prev(); }
-void next_cb(Fl_Widget*, void*) { G_wiz->next(); }
-void done_cb(Fl_Widget*, void*) { exit(0); }
+//void back_cb(Fl_Widget*, void*) { G_wiz->prev(); }
+//void next_cb(Fl_Widget*, void*) { G_wiz->next(); }
+//void done_cb(Fl_Widget*, void*) { exit(0); }
 
 int main(int argc, char** argv) {
 	G_win = new Fl_Window(400, 300, "Example Wizard");
@@ -41,7 +45,12 @@ int main(int argc, char** argv) {
 	// Wizard: page 1
 	{
 		Fl_Group* g = new Fl_Group(0, 0, 400, 300);
-		Fl_Button* next = new Fl_Button(290, 265, 100, 25, "Next @->"); next->callback(next_cb);
+		//Fl_Button* next = new Fl_Button(290, 265, 100, 25, "Next @->"); 
+		Button* next = new Button(290, 265, 100, 25, "Next @->");
+		//next->callback(next_cb);
+		next->eventClicked.addListener([](Button*) {
+			G_wiz->next();
+			});
 		Fl_Multiline_Output* out = new Fl_Multiline_Output(10, 30, 400 - 20, 300 - 80, "Welcome");
 		out->labelsize(20);
 		out->align(FL_ALIGN_TOP | FL_ALIGN_LEFT);
@@ -51,8 +60,18 @@ int main(int argc, char** argv) {
 	// Wizard: page 2
 	{
 		Fl_Group* g = new Fl_Group(0, 0, 400, 300);
-		Fl_Button* next = new Fl_Button(290, 265, 100, 25, "Next @->"); next->callback(next_cb);
-		Fl_Button* back = new Fl_Button(180, 265, 100, 25, "@<- Back"); back->callback(back_cb);
+		//Fl_Button* next = new Fl_Button(290, 265, 100, 25, "Next @->"); 
+		Button* next = new Button(290, 265, 100, 25, "Next @->");
+		//next->callback(next_cb);
+		next->eventClicked.addListener([](Button*) {
+			G_wiz->next();
+			});
+		//Fl_Button* back = new Fl_Button(180, 265, 100, 25, "@<- Back"); 
+		Button* back = new Button(180, 265, 100, 25, "@<- Back");
+		//back->callback(back_cb);
+		back->eventClicked.addListener([](Button*) {
+			G_wiz->prev();
+			});
 		Fl_Multiline_Output* out = new Fl_Multiline_Output(10, 30, 400 - 20, 300 - 80, "Terms And Conditions");
 		out->labelsize(20);
 		out->align(FL_ALIGN_TOP | FL_ALIGN_LEFT);
@@ -62,8 +81,18 @@ int main(int argc, char** argv) {
 	// Wizard: page 3
 	{
 		Fl_Group* g = new Fl_Group(0, 0, 400, 300);
-		Fl_Button* done = new Fl_Button(290, 265, 100, 25, "Finish"); done->callback(done_cb);
-		Fl_Button* back = new Fl_Button(180, 265, 100, 25, "@<- Back"); back->callback(back_cb);
+		//Fl_Button* done = new Fl_Button(290, 265, 100, 25, "Finish"); 
+		Button* done = new Button(290, 265, 100, 25, "Finish");
+		//done->callback(done_cb);
+		done->eventClicked.addListener([](Button*) {
+			exit(0);
+			});
+		//Fl_Button* back = new Fl_Button(180, 265, 100, 25, "@<- Back"); 
+		Button* back = new Button(180, 265, 100, 25, "@<- Back");
+		//back->callback(back_cb);
+		back->eventClicked.addListener([](Button*) {
+			G_wiz->prev();
+			});
 		Fl_Multiline_Output* out = new Fl_Multiline_Output(10, 30, 400 - 20, 300 - 80, "Finish");
 		out->labelsize(20);
 		out->align(FL_ALIGN_TOP | FL_ALIGN_LEFT);

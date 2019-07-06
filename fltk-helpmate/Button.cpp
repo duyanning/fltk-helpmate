@@ -11,7 +11,6 @@ Button::Button(int X, int Y, int W, int H, const std::string l)
 void Button::callback_func()
 {
 	//std::cout << "ButtonImpl" << std::endl;
-	int e;
-	click.fire(0, e);
+	eventClicked.fire(this);
 
 }

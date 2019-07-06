@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <FL/Fl_Button.H>
 
 #include "EVENT_TYPE.hpp"
@@ -9,8 +10,8 @@ class Button :
 {
 public:
 	Button(int X, int Y, int W, int H, const std::string l);
-	EVENT_TYPE(ClickEvent, (int* sender, int& e), (sender, e));
-	ClickEvent click;
+	EVENT_TYPE(ClickEvent, (Button* button), (button));
+	ClickEvent eventClicked;
 private:
 	static void s_callback_func(Fl_Widget* w, void* data)
 	{

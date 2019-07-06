@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 	button->labelsize(36);
 	button->labeltype(FL_SHADOW_LABEL);
 	//button->click.addListener(foo);
-	button->click.addListener([&](int* sender, int& e) { cout << button->when() << endl; });
+	button->eventClicked.addListener([&](Button*) { cout << button->when() << endl; });
 
 	window->end();
 	window->show(argc, argv);

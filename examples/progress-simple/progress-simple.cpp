@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
-#include <FL/Fl_Button.H>
+//#include <FL/Fl_Button.H>
+#include <Button.h>
 #include <FL/Fl_Progress.H>
 
 //
@@ -32,14 +33,18 @@
 #include <unistd.h>                            // usleep
 #endif /*WIN32*/
 
+#pragma comment(lib, "fltk-helpmate")
+
 // Button callback
-void butt_cb(Fl_Widget* butt, void* data) {
+//void butt_cb(Fl_Widget* butt, void* data) {
+void butt_cb(Button* butt) {
 
 	// Deactivate the button
 	butt->deactivate();                        // prevent button from being pressed again                   
 	Fl::check();                               // give fltk some cpu to gray out button
 	// Make the progress bar
-	Fl_Window* w = (Fl_Window*)data;           // access parent window
+	//Fl_Window* w = (Fl_Window*)data;           // access parent window
+	Fl_Window* w = butt->parent()->as_window();           // access parent window
 	w->begin();                                // add progress bar to it..
 	Fl_Progress* progress = new Fl_Progress(10, 50, 200, 30);
 	progress->minimum(0);                      // set progress range to be 0.0 ~ 1.0
@@ -66,8 +71,10 @@ void butt_cb(Fl_Widget* butt, void* data) {
 // Main
 int main() {
 	Fl_Window win(220, 90);
-	Fl_Button butt(10, 10, 100, 25, "Press");
-	butt.callback(butt_cb, &win);
+	//Fl_Button butt(10, 10, 100, 25, "Press");
+	Button butt(10, 10, 100, 25, "Press");
+	//butt.callback(butt_cb, &win);
+	butt.eventClicked.addListener(butt_cb);
 	win.resizable(win);
 	win.show();
 	return(Fl::run());
