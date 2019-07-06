@@ -19,41 +19,44 @@
 #include <stdio.h>
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
-#include <FL/Fl_Tree.H>
+//s#include <FL/Fl_Tree.H>
+#include "Tree.h"
+
+#pragma comment(lib, "fltk-helpmate")
 
 // Tree's callback
 //    Invoked whenever an item's state changes.
 //
-void TreeCallback(Fl_Widget* w, void* data) {
-	Fl_Tree* tree = (Fl_Tree*)w;
-	Fl_Tree_Item* item = (Fl_Tree_Item*)tree->callback_item();
-	if (!item) return;
-	switch (tree->callback_reason()) {
-	case FL_TREE_REASON_SELECTED: {
-		char pathname[256];
-		tree->item_pathname(pathname, sizeof(pathname), item);
-		fprintf(stderr, "TreeCallback: Item selected='%s', Full pathname='%s'\n", item->label(), pathname);
-		break;
-	}
-	case FL_TREE_REASON_DESELECTED:
-		// fprintf(stderr, "TreeCallback: Item '%s' deselected\n", item->label());
-		break;
-	case FL_TREE_REASON_OPENED:
-		// fprintf(stderr, "TreeCallback: Item '%s' opened\n", item->label());
-		break;
-	case FL_TREE_REASON_CLOSED:
-		// fprintf(stderr, "TreeCallback: Item '%s' closed\n", item->label());
-		break;
-#if FLTK_ABI_VERSION >= 10301
-		// To enable this callback, use tree->item_reselect_mode(FL_TREE_SELECTABLE_ALWAYS);
-	case FL_TREE_REASON_RESELECTED:
-		// fprintf(stderr, "TreeCallback: Item '%s' reselected\n", item->label());
-		break;
-#endif
-	default:
-		break;
-	}
-}
+//void TreeCallback(Fl_Widget* w, void* data) {
+//	Fl_Tree* tree = (Fl_Tree*)w;
+//	Fl_Tree_Item* item = (Fl_Tree_Item*)tree->callback_item();
+//	if (!item) return;
+//	switch (tree->callback_reason()) {
+//	case FL_TREE_REASON_SELECTED: {
+//		char pathname[256];
+//		tree->item_pathname(pathname, sizeof(pathname), item);
+//		fprintf(stderr, "TreeCallback: Item selected='%s', Full pathname='%s'\n", item->label(), pathname);
+//		break;
+//	}
+//	case FL_TREE_REASON_DESELECTED:
+//		// fprintf(stderr, "TreeCallback: Item '%s' deselected\n", item->label());
+//		break;
+//	case FL_TREE_REASON_OPENED:
+//		// fprintf(stderr, "TreeCallback: Item '%s' opened\n", item->label());
+//		break;
+//	case FL_TREE_REASON_CLOSED:
+//		// fprintf(stderr, "TreeCallback: Item '%s' closed\n", item->label());
+//		break;
+//#if FLTK_ABI_VERSION >= 10301
+//		// To enable this callback, use tree->item_reselect_mode(FL_TREE_SELECTABLE_ALWAYS);
+//	case FL_TREE_REASON_RESELECTED:
+//		// fprintf(stderr, "TreeCallback: Item '%s' reselected\n", item->label());
+//		break;
+//#endif
+//	default:
+//		break;
+//	}
+//}
 
 int main(int argc, char* argv[]) {
 	Fl::scheme("gtk+");
@@ -61,9 +64,15 @@ int main(int argc, char* argv[]) {
 	win->begin();
 	{
 		// Create the tree
-		Fl_Tree* tree = new Fl_Tree(10, 10, win->w() - 20, win->h() - 20);
+		//Fl_Tree* tree = new Fl_Tree(10, 10, win->w() - 20, win->h() - 20);
+		Tree* tree = new Tree(10, 10, win->w() - 20, win->h() - 20);
 		tree->showroot(0);				// don't show root of tree
-		tree->callback(TreeCallback);		// setup a callback for the tree
+		//tree->callback(TreeCallback);		// setup a callback for the tree
+		tree->eventItemSelected.addListener([](Tree* tree, Fl_Tree_Item* item) {
+			char pathname[256];
+			tree->item_pathname(pathname, sizeof(pathname), item);
+			fprintf(stderr, "TreeCallback: Item selected='%s', Full pathname='%s'\n", item->label(), pathname);
+			});
 
 		// Add some items
 		tree->add("Flintstones/Fred");
