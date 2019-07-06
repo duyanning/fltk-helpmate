@@ -17,11 +17,11 @@ public:
 		m_fl_menu_item = fl_menu_item;
 	}
 
-	Fl_Menu_Item* fltk() { return m_fl_menu_item; }
+	Fl_Menu_Item* fltk() const { return m_fl_menu_item; }
 
 	virtual ~Menu_Item()
 	{
-		delete m_fl_menu_item->user_data();
+		m_fl_menu_item = nullptr;
 	}
 private:
 	Fl_Menu_Item* m_fl_menu_item;

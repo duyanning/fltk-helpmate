@@ -12,6 +12,7 @@ class Menu_Bar :
 {
 public:
 	Menu_Bar(int X, int Y, int W, int H, const std::string l = "");
+	virtual ~Menu_Bar();
 	//EVENT_TYPE(ClickEvent, (Button* button), (button));
 	//ClickEvent eventClicked;
 
