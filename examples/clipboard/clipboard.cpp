@@ -22,12 +22,15 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Tabs.H>
-#include <FL/Fl_Button.H>
+//#include <FL/Fl_Button.H>
+#include "Button.h"
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
 #ifdef WIN32
 #include <windows.h>
 #endif // WIN32
+
+#pragma comment(lib, "fltk-helpmate")
 
 /* Displays and follows the content of the clipboard with either image or text data
  */
@@ -115,20 +118,32 @@ public:
 		}
 		return 1;
 	}
+	void cb(Button* button)
+	{
+		if (Fl::clipboard_contains(Fl::clipboard_image)) {
+			Fl::paste(*this, 1, Fl::clipboard_image); // try to find image in the clipboard
+			return;
+		}
+		if (Fl::clipboard_contains(Fl::clipboard_plain_text))
+			Fl::paste(*this, 1, Fl::clipboard_plain_text); // also try to find text
+	}
+
 } *tabs;
 
 
-void cb(Fl_Widget* wid, clipboard_viewer* tabs)
-{
-	if (Fl::clipboard_contains(Fl::clipboard_image)) {
-		Fl::paste(*tabs, 1, Fl::clipboard_image); // try to find image in the clipboard
-		return;
-	}
-	if (Fl::clipboard_contains(Fl::clipboard_plain_text)) Fl::paste(*tabs, 1, Fl::clipboard_plain_text); // also try to find text
-}
+//void cb(Fl_Widget* wid, clipboard_viewer* tabs)
+//{
+//	if (Fl::clipboard_contains(Fl::clipboard_image)) {
+//		Fl::paste(*tabs, 1, Fl::clipboard_image); // try to find image in the clipboard
+//		return;
+//	}
+//	if (Fl::clipboard_contains(Fl::clipboard_plain_text)) 
+//		Fl::paste(*tabs, 1, Fl::clipboard_plain_text); // also try to find text
+//}
 
 void clip_callback(int source, void* data) { // called after clipboard was changed or at application activation
-	if (source == 1) cb(NULL, (clipboard_viewer*)data);
+	//if (source == 1) cb(NULL, (clipboard_viewer*)data);
+	if (source == 1) tabs->cb(nullptr);
 }
 
 int main(int argc, char** argv)
@@ -154,8 +169,10 @@ int main(int argc, char** argv)
 	tabs->resizable(display);
 
 	Fl_Group* g2 = new Fl_Group(10, 510, 200, 25);
-	Fl_Button* refresh = new Fl_Button(10, 510, 200, 25, "Refresh from clipboard");
-	refresh->callback((Fl_Callback*)cb, tabs);
+	//Fl_Button* refresh = new Fl_Button(10, 510, 200, 25, "Refresh from clipboard");
+	Button* refresh = new Button(10, 510, 200, 25, "Refresh from clipboard");
+	//refresh->callback((Fl_Callback*)cb, tabs);
+	refresh->eventClicked.addListener(tabs, &clipboard_viewer::cb);
 	g2->end();
 	g2->resizable(NULL);
 	win->end();
