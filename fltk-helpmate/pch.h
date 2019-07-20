@@ -24,7 +24,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Input.H>
 
-#include "EVENT_TYPE.hpp"
+#include "event-type/EVENT_TYPE.hpp"
 
 
 #include "StringPrison.h"

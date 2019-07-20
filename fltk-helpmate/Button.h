@@ -3,7 +3,7 @@
 #include <string>
 #include <FL/Fl_Button.H>
 
-#include "EVENT_TYPE.hpp"
+#include "event-type/EVENT_TYPE.hpp"
 
 class Button :
 	public Fl_Button

@@ -1,0 +1,3 @@
+[submodule "fltk-helpmate/event-type"]
+	path = fltk-helpmate/event-type
+	url = git@github.com:duyanning/event-type.git

@@ -3,7 +3,7 @@
 #include <string>
 #include <FL/Fl_Tree.H>
 
-#include "EVENT_TYPE.hpp"
+#include "event-type/EVENT_TYPE.hpp"
 
 class Tree :
 	public Fl_Tree

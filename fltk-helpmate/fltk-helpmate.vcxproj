@@ -153,7 +153,6 @@
   <ItemGroup>
     <ClInclude Include="Box.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="EVENT_TYPE.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Menu_Bar.h" />

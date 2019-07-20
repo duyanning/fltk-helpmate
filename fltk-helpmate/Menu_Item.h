@@ -1,6 +1,6 @@
 #pragma once
 #include <FL/Fl_Menu_Item.H>
-#include "EVENT_TYPE.hpp"
+#include "event-type/EVENT_TYPE.hpp"
 
 class Menu_Bar;
 

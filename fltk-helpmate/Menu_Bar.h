@@ -3,7 +3,7 @@
 #include <string>
 #include <FL/Fl_Menu_Bar.H>
 
-#include "EVENT_TYPE.hpp"
+#include "event-type/EVENT_TYPE.hpp"
 
 class Menu_Item;
 
